@@ -4,13 +4,13 @@ Donate link: http://liton-online.com/donate
 Tags: WordPress, WordPress FAQ, Frequently asked questions,WordPress Plugin
 Requires at least: 3.8
 Tested up to: 4.1
-Stable tag: 1.4.1
+Stable tag: 1.4.2
 
 	
 Best WordPress FAQ Plugin integrated with Custom Post Type. WP Awesome FAQ comes with accordion based jQuery UI. 
 
 == Description ==
-No need extra configurations for WP Awesome FAQ Plugin. WP Awesome FAQ Plugin allows to create unlimited FAQ Items with Title, Description. With the plugin installation's a Custom Post Type named "FAQ" will be created automatically. A shortcode [jw_faq] needed, just crate a page for your FAQ section and update the page.
+No need extra configurations for WP Awesome FAQ Plugin. WP Awesome FAQ Plugin allows to create unlimited FAQ Items with Title, Description. With the plugin installation's a Custom Post Type named "FAQ" will be created automatically. A shortcode [faq] needed, just crate a page for your FAQ section and update the page.
 
 = Features Included =
 * WP Awesome FAQ Plugin includes- Title, Description.
@@ -53,8 +53,11 @@ Installation Video Tutorial:
 
 
 == Changelog ==
+= 1.4.2 =
+* Updated with admin notices.
+* Insert contents above the shortcode problem fixed
+
 = 1.4.1 =
-* Changed the shortcode [faq] to [jw_faq]
 * Updated with admin notices.
 * CSS bugs fixed.
 = 1.4.0 =

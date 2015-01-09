@@ -3,7 +3,7 @@
 Plugin Name: WP Awesome FAQ
 Plugin URI: http://jeweltheme.com/product/wp-awesome-faq-pro/
 Description: Accordion based Awesome WordPress FAQ Plugin
-Version: 1.4.1
+Version: 1.4.2
 Author: Liton Arefin
 Author URI: http://www.jeweltheme.com
 License: GPL2
@@ -87,34 +87,36 @@ add_action( 'init', 'jeweltheme_wp_faq_enqueue_scripts' );
 
 
 function jeweltheme_accordion_shortcode() { 
-// Registering the scripts and style
+    // Registering the scripts and style
+    ob_start();
 
+    // Getting FAQs from WordPress Awesome FAQ plugin's Custom Post Type questions
+    $args = array( 'posts_per_page' => -1,  'post_type' => 'faq', 'order'=>"DESC");
+    $query = new WP_Query( $args );
 
-// Getting FAQs from WordPress Awesome FAQ plugin's Custom Post Type questions
-$args = array( 'posts_per_page' => -1,  'post_type' => 'faq', 'order'=>"DESC");
-$query = new WP_Query( $args );
+    global $faq;
 
-global $faq;
-
-?>
-<div id="accordion">
-    <?php if( $query->have_posts() ) { while ( $query->have_posts() ) { $query->the_post();
-        $terms = wp_get_post_terms(get_the_ID(), 'faq_cat' );
-        $t = array();
-        foreach($terms as $term) $t[] = $term->name;
-        echo implode(' ', $t); $t = array();
     ?>
+    <div id="accordion">
+        <?php if( $query->have_posts() ) { while ( $query->have_posts() ) { $query->the_post();
+            $terms = wp_get_post_terms(get_the_ID(), 'faq_cat' );
+            $t = array();
+            foreach($terms as $term) $t[] = $term->name;
+            echo implode(' ', $t); $t = array();
+        ?>
 
-        <h3><a href=""><?php echo get_the_title();?></a></h3><div><?php echo get_the_content();?></div>    
+            <h3><a href=""><?php echo get_the_title();?></a></h3><div><?php echo get_the_content();?></div>    
 
-    <?php } //end while
-} //endif ?>
-</div>
-<?php
-    //Reset the query
-wp_reset_query();
-wp_reset_postdata();
-
+        <?php } //end while
+    } //endif ?>
+    </div>
+    <?php
+        //Reset the query
+    wp_reset_query();
+    wp_reset_postdata();
+        $output = ob_get_contents(); // end output buffering
+        ob_end_clean(); // grab the buffer contents and empty the buffer
+        return $output;
 }
 add_shortcode('faq', 'jeweltheme_accordion_shortcode');
 
