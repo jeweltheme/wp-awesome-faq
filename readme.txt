@@ -85,4 +85,4 @@ Yes, you need a shortcodes [jw_faq] to use WP Awesome FAQ Plugin Plugin.
 ** Does WP Awesome FAQ Plugin items supports paginations? **	
 We are working on it, In next version we will include the pagination.
 
-A Free product by <a href="http://jeweltheme.com>Jewel Theme</a>
+A Free product by <a href="http://jeweltheme.com">Jewel Theme</a>
