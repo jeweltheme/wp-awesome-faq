@@ -3,7 +3,7 @@
 Plugin Name: WP Awesome FAQ
 Plugin URI: http://jeweltheme.com/product/wp-awesome-faq-pro/
 Description: Accordion based Awesome WordPress FAQ Plugin
-Version: 1.4.2
+Version: 1.7.0
 Author: Liton Arefin
 Author URI: http://www.jeweltheme.com
 License: GPL2
@@ -34,18 +34,16 @@ function jeweltheme_wp_awesome_faq_post_type() {
         'show_ui'       => true,
         'show_in_menu'  => true,
         'query_var'     => true,
-        'rewrite'       => true,
+        'rewrite'       => array('slug' => 'faq'),
         'capability_type'=> 'post',
         'has_archive'   => true,
         'hierarchical'  => false,
         'menu_position' => 5,
         'supports'      => array( 'title', 'editor'),
-        //'menu_icon' => get_admin_url(). 'images/press-this.png',  // Icon Path
         'menu_icon' => 'dashicons-welcome-write-blog'
-        //<span class="dashicons dashicons-welcome-write-blog"></span>
     );
 
-    register_post_type( 'jw_faq', $args ); 
+    register_post_type( 'faq', $args ); 
 
         // Add new taxonomy, make it hierarchical (like categories)
         $labels = array(
@@ -73,7 +71,7 @@ function jeweltheme_wp_awesome_faq_post_type() {
 
 add_action( 'init', 'jeweltheme_wp_awesome_faq_post_type' );
 
-function jeweltheme_wp_faq_enqueue_scripts(){
+function jeweltheme_wp_awesome_faq_enqueue_scripts(){
      if(!is_admin()){
         wp_register_style('jeweltheme-jquery-ui-style',plugins_url('/jquery-ui.css', __FILE__ ));
         wp_enqueue_style('jeweltheme-jquery-ui-style');
@@ -83,33 +81,71 @@ function jeweltheme_wp_faq_enqueue_scripts(){
         wp_enqueue_script('jeweltheme-custom-js');
     }   
 }
-add_action( 'init', 'jeweltheme_wp_faq_enqueue_scripts' );
+add_action( 'init', 'jeweltheme_wp_awesome_faq_enqueue_scripts' );
 
 
-function jeweltheme_accordion_shortcode() { 
-    // Registering the scripts and style
-    ob_start();
+function jeweltheme_wp_awesome_faq_shortcode($atts, $content= null) { 
+    
+    extract( shortcode_atts(
+        array(
+           'id' => '',
+            'content'  => '',
+            "cat_id" => '',
+            "image" => '',
+            ), $atts )
+    );
 
-    // Getting FAQs from WordPress Awesome FAQ plugin's Custom Post Type questions
-    $args = array( 'posts_per_page' => -1,  'post_type' => 'faq', 'order'=>"DESC");
+
+    // WP_Query arguments
+    if( $cat_id == '' ) :
+        $args = array (
+            'posts_per_page'        => -1,
+            'post_type'             => 'faq',
+            'p'                     => $id,
+            'order' =>"DESC"
+            );
+    else:
+        $args = array (
+            'posts_per_page'        => -1,
+            'post_type'             => 'faq',
+            'p'                     => $id,
+            'tax_query' => array(
+                array(
+                    'taxonomy' => 'faq_cat',
+                    'field'    => 'id',
+                    'terms'    => array( $cat_id ),
+                    ),
+                ),
+
+            'order' =>"DESC"
+            );
+    endif;
+
     $query = new WP_Query( $args );
+
+    ob_start();
 
     global $faq;
 
+    $count = 0; 
+    $accordion = 'accordion-' . time() . rand();
+
     ?>
-    <div id="accordion">
-        <?php if( $query->have_posts() ) { while ( $query->have_posts() ) { $query->the_post();
-            $terms = wp_get_post_terms(get_the_ID(), 'faq_cat' );
-            $t = array();
-            foreach($terms as $term) $t[] = $term->name;
-            echo implode(' ', $t); $t = array();
-        ?>
+        <div class="accordion" id="<?php echo $accordion .  $count;?>">
+            <?php if( $query->have_posts() ) { while ( $query->have_posts() ) { $query->the_post(); ?>
 
-            <h3><a href=""><?php echo get_the_title();?></a></h3><div><?php echo get_the_content();?></div>    
+                <h3><a href=""><?php the_title();?></a></h3><div>
+                <?php if($image){ ?>
+                    <img src="<?php echo $image;?>">
+                <?php } ?>
 
-        <?php } //end while
-    } //endif ?>
-    </div>
+                    <?php the_content();?></div>    
+
+                <?php } //end while
+            } else{
+                echo "<p>No FAQ Items. Please add some Items</p>";
+                } ?>
+        </div>
     <?php
         //Reset the query
     wp_reset_query();
@@ -118,16 +154,16 @@ function jeweltheme_accordion_shortcode() {
         ob_end_clean(); // grab the buffer contents and empty the buffer
         return $output;
 }
-add_shortcode('faq', 'jeweltheme_accordion_shortcode');
+add_shortcode('faq', 'jeweltheme_wp_awesome_faq_shortcode');
 
 
 
 
 /* Display a notice that can be dismissed */
 
-add_action('admin_notices', 'jeweltheme_faq_admin_notice');
+add_action('admin_notices', 'jeweltheme_wp_awesome_faq_admin_notice');
 
-function jeweltheme_faq_admin_notice() {
+function jeweltheme_wp_awesome_faq_admin_notice() {
     global $current_user ;
         $user_id = $current_user->ID;
     if ( ! get_user_meta($user_id, 'jeweltheme_ignore_notice') ) {
@@ -136,13 +172,52 @@ function jeweltheme_faq_admin_notice() {
         echo "</p></div>";
     }
 }
-add_action('admin_init', 'jeweltheme_ignore');
+add_action('admin_init', 'jeweltheme_wp_awesome_faq_ignore');
 
 
-function jeweltheme_ignore() {
+function jeweltheme_wp_awesome_faq_ignore() {
     global $current_user;
         $user_id = $current_user->ID;
         if ( isset($_GET['jeweltheme_ignore']) && '0' == $_GET['jeweltheme_ignore'] ) {
              add_user_meta($user_id, 'jeweltheme_ignore_notice', 'true', true);
     }
+}
+
+
+
+
+
+// Manage Category Shortcode Columns
+add_filter("manage_faq_cat_custom_column", 'jeweltheme_wp_awesome_faq_cat_columns', 10, 3);
+add_filter("manage_edit-faq_cat_columns", 'jeweltheme_wp_awesome_faq_cat_manage_columns'); 
+ 
+function jeweltheme_wp_awesome_faq_cat_manage_columns($theme_columns) {
+    $new_columns = array(
+            'cb' => '<input type="checkbox" />',
+            'name' => __('Name'),
+            'faq_category_shortcode' => __( 'Category Shortcode', 'jeweltheme' ),
+            'slug' => __('Slug'),
+            'posts' => __('Posts')
+        );
+    return $new_columns;
+
+}
+
+
+function jeweltheme_wp_awesome_faq_cat_columns($out, $column_name, $theme_id) {
+    $theme = get_term($theme_id, 'faq_cat');
+    switch ($column_name) {
+        
+        case 'title':
+            echo get_the_title();
+        break;
+
+        case 'faq_category_shortcode':             
+             echo '[faq cat_id="' . $theme_id. '"]';
+        break;
+ 
+        default:
+            break;
+    }
+    return $out;    
 }

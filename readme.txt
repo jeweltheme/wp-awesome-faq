@@ -3,19 +3,19 @@ Contributors: litonice13, jwthemeltd
 Donate link: http://liton-online.com/donate
 Tags: WordPress, WordPress FAQ, Frequently asked questions,WordPress Plugin
 Requires at least: 3.8
-Tested up to: 4.1
-Stable tag: 1.4.2
+Tested up to: 4.2.2
+Stable tag: 1.7.0
 
 	
 Best WordPress FAQ Plugin integrated with Custom Post Type. WP Awesome FAQ comes with accordion based jQuery UI. 
 
 == Description ==
-No need extra configurations for WP Awesome FAQ Plugin. WP Awesome FAQ Plugin allows to create unlimited FAQ Items with Title, Description. With the plugin installation's a Custom Post Type named "FAQ" will be created automatically. A shortcode [faq] needed, just crate a page for your FAQ section and update the page.
+No need extra configurations for WP Awesome FAQ Plugin. WP Awesome FAQ Plugin allows to create unlimited FAQ Items with Title, Description. With the plugin installation's a Custom Post Type named "FAQ" will be created automatically. To show all FAQ's items a shortcode [faq] needed, just crate a page for your FAQ section and update the page. If you want to show Category based Shortcodes Go To>>FAQ Category and you will see Shotcodes like [faq cat_id="8"] , this is the shortcode you need to place where you want to show the FAQ.
 
 = Features Included =
 * WP Awesome FAQ Plugin includes- Title, Description.
 * No Post Description Limits.
-* Category based FAQ (very much requested feature !!!).
+* Category Shortcode based FAQ (very much requested feature !!!).
 * Window resize auto height.
 * Many more settings are comming!!!
 
@@ -41,6 +41,7 @@ This plugin is licensed under the [Apache License, Version 2.0](http://www.apach
 *  Extract the zip file, copy and paste to the 'wp-conten/plugins/' directory of your WordPress Installation. 
 *  Activate the plugin.
 *  Create a new page named it "FAQ". In the Editor place this shortcode [faq]
+* To show all FAQ's items a shortcode [faq] needed, just crate a page for your FAQ section and update the page. If you want to show Category based Shortcodes Go To>>FAQ Category and you will see Shotcodes like [faq cat_id="8"] , this is the shortcode you need to place where you want to show the FAQ.
 
 Installation Video Tutorial:
 [youtube http://www.youtube.com/watch?v=_R-9s1pm9ko]
@@ -53,8 +54,17 @@ Installation Video Tutorial:
 
 
 == Changelog ==
+= 1.5.0 =
+* Content Auto Paragraph problem fixed
+* Added specific Category Shortcode 
+* Shortcode is more powerful then before
+* Added "Category Shotcode" Manage column in FAQ Category
+
+= 1.4.3 =
+* Shortcode content alignment fixed.
+
 = 1.4.2 =
-* Updated with admin notices.
+* Changed [jw_faq] shortode to [faq] Shortcode
 * Insert contents above the shortcode problem fixed
 
 = 1.4.1 =
@@ -87,5 +97,3 @@ Yes, you need a shortcodes [jw_faq] to use WP Awesome FAQ Plugin Plugin.
 
 ** Does WP Awesome FAQ Plugin items supports paginations? **	
 We are working on it, In next version we will include the pagination.
-
-A Free product by http://jeweltheme.com
