@@ -1,6 +1,6 @@
 === WP Awesome FAQ Plugin ===
 Contributors: litonice13, jwthemeltd
-Donate link: http://liton-online.com/donate
+Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&amp;business=jwthemeltd@gmail.com&amp;lc=US&amp;item_name=Donate&amp;currency_code=USD&amp;bn=PP-DonationsBF:btn_donate_SM.gif:NonHostedGuest
 Tags: WordPress, WordPress FAQ, Frequently asked questions,WordPress Plugin
 Requires at least: 3.8
 Tested up to: 4.2.2
