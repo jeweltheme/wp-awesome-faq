@@ -3,7 +3,7 @@
 Plugin Name: WP Awesome FAQ
 Plugin URI: http://jeweltheme.com/product/wp-awesome-faq-pro/
 Description: Accordion based Awesome WordPress FAQ Plugin
-Version: 1.7.0
+Version: 1.9.0
 Author: Liton Arefin
 Author URI: http://www.jeweltheme.com
 License: GPL2
